@@ -1,1 +1,3 @@
 /venv/
+/backeryBackend/account/migrations/0001_initial.py
+/backeryBackend/db.sqlite3
