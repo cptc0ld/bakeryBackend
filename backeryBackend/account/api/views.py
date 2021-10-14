@@ -1,19 +1,24 @@
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
-from rest_framework.views import APIView
-from django.contrib.auth import authenticate
-from rest_framework.decorators import api_view, authentication_classes, permission_classes
+import inspect
+import os
 
+from django.contrib.auth import authenticate
+from rest_framework import status
+from rest_framework.authtoken.models import Token
+from rest_framework.decorators import api_view, authentication_classes, permission_classes, renderer_classes
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
+from .renderer import JsonRenderer
 from .serializers import RegistrationSerializer, AccountPropertiesSerializer
 from ..models import Account
-from rest_framework.authtoken.models import Token
 
 
-# Register
+
 @api_view(['POST', ])
 @permission_classes([])
 @authentication_classes([])
+@renderer_classes([JsonRenderer])
 def registration_view(request):
     if request.method == 'POST':
         data = {}
@@ -68,6 +73,7 @@ def validate_username(username):
 # Headers: Authorization: Token <token>
 @api_view(['GET', ])
 @permission_classes((IsAuthenticated,))
+@renderer_classes([JsonRenderer])
 def account_properties_view(request):
     try:
         account = request.user
@@ -84,6 +90,7 @@ def account_properties_view(request):
 class ObtainAuthTokenView(APIView):
     authentication_classes = []
     permission_classes = []
+    renderer_classes = [JsonRenderer]
 
     def post(self, request):
         context = {}
@@ -110,6 +117,7 @@ class ObtainAuthTokenView(APIView):
 @api_view(['GET', ])
 @permission_classes([])
 @authentication_classes([])
+@renderer_classes([JsonRenderer])
 def does_account_exist_view(request):
     if request.method == 'GET':
         email = request.GET['email'].lower()
@@ -124,13 +132,15 @@ def does_account_exist_view(request):
 
 @api_view(['GET', ])
 @permission_classes([IsAdminUser, ])
+@renderer_classes([JsonRenderer])
 def list_all_users(request):
     if request.method == 'GET':
         data = {}
         try:
             account = Account.objects.all()
             serializers = AccountPropertiesSerializer(account, many=True)
-            return Response(serializers.data, status=status.HTTP_200_OK)
+            content = {'users': serializers.data}
+            return Response(content, status=status.HTTP_200_OK)
         except Account.DoesNotExist:
             data['response'] = "Account does not exist"
         return Response(data)

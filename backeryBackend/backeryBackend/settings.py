@@ -122,6 +122,9 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
         'rest_framework.permissions.IsAdminUser',
     ),
+    'DEFAULT_RENDERER_CLASSES': [
+        'account.api.renderer.JsonRenderer'
+    ]
 }
 
 AUTH_USER_MODEL = 'account.Account'
