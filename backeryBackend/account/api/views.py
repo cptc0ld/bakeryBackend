@@ -26,13 +26,13 @@ def registration_view(request):
         if validate_email(email) is not None:
             data['error_message'] = 'That email is already in use.'
             data['response'] = 'Error'
-            return Response(data)
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
         username = request.data.get('username', '0')
         if validate_username(username) is not None:
             data['error_message'] = 'That username is already in use.'
             data['response'] = 'Error'
-            return Response(data)
+            return Response(data, status=status.HTTP_400_BAD_REQUEST)
 
         serializer = RegistrationSerializer(data=request.data)
 
@@ -44,9 +44,11 @@ def registration_view(request):
             data['pk'] = account.pk
             token = Token.objects.get(user=account).key
             data['token'] = token
+            data['is_admin'] = account.is_admin
+            return Response(data, status=status.HTTP_200_OK)
         else:
             data = serializer.errors
-        return Response(data)
+            return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def validate_email(email):
@@ -107,11 +109,12 @@ class ObtainAuthTokenView(APIView):
             context['pk'] = account.pk
             context['email'] = email.lower()
             context['token'] = token.key
+            context['is_admin'] = account.is_admin
+            return Response(context, status=status.HTTP_200_OK)
         else:
             context['response'] = 'Error'
             context['error_message'] = 'Invalid credentials'
-
-        return Response(context)
+            return Response(context, status=status.HTTP_401_UNAUTHORIZED)
 
 
 @api_view(['GET', ])

@@ -29,3 +29,7 @@ class JsonRenderer(renderers.JSONRenderer):
         if response.status_code == status.HTTP_500_INTERNAL_SERVER_ERROR:
             ret["message"] = "Server error"
             return super(JsonRenderer, self).render(ret, media_type, renderer_context)
+
+        if response.status_code == status.HTTP_400_BAD_REQUEST:
+            ret["message"] = "Bad Request"
+            return super(JsonRenderer, self).render(ret, media_type, renderer_context)
