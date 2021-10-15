@@ -14,7 +14,6 @@ class JsonRenderer(renderers.JSONRenderer):
         }
         if response.status_code == status.HTTP_200_OK:
             ret["message"] = "OK"
-            print(ret)
             return super(JsonRenderer, self).render(ret, media_type, renderer_context)
 
         if response.status_code == status.HTTP_404_NOT_FOUND:

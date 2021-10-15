@@ -44,7 +44,6 @@ class ProductRecipeSerializer(serializers.ModelSerializer):
         product_recipe = ProductsRecipe.objects.create(product=product_model)
         ingredients = validated_data.pop('ingredients')
         for i in ingredients:
-            print(i)
             ingredients_model = IngredientsPresent.objects.create(product=product_model, **i)
             product_recipe.ingredients.add(ingredients_model)
 

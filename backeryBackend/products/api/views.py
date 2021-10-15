@@ -34,9 +34,7 @@ def list_all_products_recipe(request, id):
         data = {}
         try:
             product = Products.objects.get(pk=id)
-            print(product)
             product_recipe = ProductsRecipe.objects.get(pk=product)
-            print(product_recipe)
             serializers = ProductRecipeSerializer(product_recipe)
             return Response(serializers.data, status=status.HTTP_200_OK)
         except:
@@ -86,5 +84,4 @@ def add_products(request):
             content = {'message': request.data.get('product')['name'] + "Added"}
             return Response(content, status=status.HTTP_200_OK)
         else:
-            print(serializers.data)
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
