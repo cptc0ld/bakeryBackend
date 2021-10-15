@@ -5,12 +5,7 @@ from rest_framework import serializers
 
 
 class MyIngredientsManager(models.Manager):
-    def create(self, data):
-        item = self.model()
-        item.name = data['name']
-        item.quantityPresent = data['quantityPresent']
-        item.costPrice = data['costPrice']
-        return item
+    pass
 
 
 class Ingredients(models.Model):
@@ -18,6 +13,7 @@ class Ingredients(models.Model):
     name = models.CharField(max_length=30, unique=True)
     quantityPresent = models.IntegerField(default=0)
     costPrice = models.IntegerField(default=0)
+    image = models.ImageField('Uploaded image', default='default.jpg')
 
     objects = MyIngredientsManager()
 

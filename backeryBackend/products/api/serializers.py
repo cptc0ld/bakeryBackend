@@ -12,4 +12,4 @@ class ProductSerializer(serializers.ModelSerializer):
 class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredients
-        fields = ['id', 'name', 'quantityPresent', 'costPrice']
+        fields = ['id', 'name', 'quantityPresent', 'costPrice', 'image']
