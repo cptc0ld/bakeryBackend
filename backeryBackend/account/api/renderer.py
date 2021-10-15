@@ -8,7 +8,6 @@ class JsonRenderer(renderers.JSONRenderer):
 
     def render(self, data, media_type=None, renderer_context=None):
         response = renderer_context['response']
-        print(data)
         ret = {
             "status": response.status_code,
             "data": data

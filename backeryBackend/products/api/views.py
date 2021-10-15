@@ -7,8 +7,8 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from .renderer import JsonRenderer
-from .serializers import ProductSerializer, IngredientSerializer
-from ..models import Products, Ingredients
+from .serializers import ProductSerializer, IngredientSerializer, ProductRecipeSerializer
+from ..models import Products, Ingredient
 
 
 @api_view(['GET', ])
@@ -33,7 +33,7 @@ def list_all_ingredients(request):
     if request.method == 'GET':
         data = {}
         try:
-            ingredients = Ingredients.objects.all()
+            ingredients = Ingredient.objects.all()
             serializers = IngredientSerializer(ingredients, many=True)
             content = {'ingredients': serializers.data}
             return Response(content, status=status.HTTP_200_OK)
@@ -48,11 +48,7 @@ def list_all_ingredients(request):
 @parser_classes([MultiPartParser, FormParser, JSONParser])
 def add_ingredients(request):
     if request.method == 'POST':
-        print(request.data)
-        # data_ingredient = Ingredients.objects.create(ingredients)
-        # data_ingredient.save()
         serializers = IngredientSerializer(data=request.data)
-        # import pdb; pdb.set_trace()
         if serializers.is_valid():
             serializers.save()
             content = {'added': serializers.data}
@@ -66,12 +62,11 @@ def add_ingredients(request):
 @renderer_classes([JsonRenderer])
 def add_products(request):
     if request.method == 'POST':
-        products = request.data.get('products')
-        try:
-            data_products = Products.objects.create(products)
-            data_products.save()
-            content = {'message': products["name"] + " Added"}
+        serializers = ProductRecipeSerializer(data=request.data)
+        if serializers.is_valid():
+            serializers.save()
+            content = {'message': request.data.get('product')['name'] + "Added"}
             return Response(content, status=status.HTTP_200_OK)
-        except:
-            content = {'error_message': products["name"] + " Already Exist"}
-            return Response(content, status=status.HTTP_400_BAD_REQUEST)
+        else:
+            print(serializers.data)
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)

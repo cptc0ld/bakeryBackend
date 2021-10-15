@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Products, Ingredients
+from .models import Products, Ingredient, ProductsRecipe, IngredientsPresent
 
 
-@admin.register(Products, Ingredients)
+@admin.register(Products, Ingredient, ProductsRecipe, IngredientsPresent)
 class ProductsAdmin(admin.ModelAdmin):
-    readonly_fields = ('id',)
+    pass

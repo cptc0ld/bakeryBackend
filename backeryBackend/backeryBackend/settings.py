@@ -67,7 +67,7 @@ WSGI_APPLICATION = 'backeryBackend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'Backery',
+        'NAME': 'Backery2',
         'USER': 'django',
         'PASSWORD': 'password',
         'HOST': 'localhost',
