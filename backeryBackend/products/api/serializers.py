@@ -7,11 +7,21 @@ class IngredientSerializer(serializers.ModelSerializer):
         model = Ingredient
         fields = '__all__'
 
+    def to_representation(self, instance):
+        data = super(IngredientSerializer, self).to_representation(instance)
+        data['image'] = " http://127.0.0.1:8000" + data['image']
+        return data
+
 
 class ProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = Products
         fields = '__all__'
+
+    def to_representation(self, instance):
+        data = super(ProductSerializer, self).to_representation(instance)
+        data['image'] = " http://127.0.0.1:8000" + data['image']
+        return data
 
 
 class IngredientsPresentSerializer(serializers.ModelSerializer):
