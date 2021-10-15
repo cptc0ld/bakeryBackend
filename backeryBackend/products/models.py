@@ -10,6 +10,7 @@ class Ingredient(models.Model):
 
 class Products(models.Model):
     name = models.CharField(max_length=30, unique=True)
+    image = models.ImageField('Uploaded image', default='default.jpg')
 
     def __str__(self):
         return self.name

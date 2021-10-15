@@ -85,3 +85,21 @@ def add_products(request):
             return Response(content, status=status.HTTP_200_OK)
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['PUT', ])
+@permission_classes([IsAdminUser, ])
+@renderer_classes([JsonRenderer])
+@parser_classes([MultiPartParser, FormParser, JSONParser])
+def update_product(request):
+    if request.method == 'PUT':
+        product_id = request.POST.get('id')
+        product = Products.objects.get(pk=product_id)
+        serializers = ProductSerializer(product, data=request.data)
+        print(request.data)
+        if serializers.is_valid():
+            serializers.save()
+            content = {'message': product.name + "Added"}
+            return Response(content, status=status.HTTP_200_OK)
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
