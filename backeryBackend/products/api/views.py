@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 from .renderer import JsonRenderer
 from .serializers import ProductSerializer, IngredientSerializer, ProductRecipeSerializer
-from ..models import Products, Ingredient
+from ..models import Products, Ingredient, ProductsRecipe
 
 
 @api_view(['GET', ])
@@ -20,6 +20,24 @@ def list_all_products(request):
         try:
             product = Products.objects.all()
             serializers = ProductSerializer(product, many=True)
+            return Response(serializers.data, status=status.HTTP_200_OK)
+        except:
+            data['err'] = "Some error occurred"
+            return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['GET', ])
+@permission_classes([IsAuthenticated, ])
+@renderer_classes([JsonRenderer])
+def list_all_products_recipe(request, id):
+    if request.method == 'GET':
+        data = {}
+        try:
+            product = Products.objects.get(pk=id)
+            print(product)
+            product_recipe = ProductsRecipe.objects.get(pk=product)
+            print(product_recipe)
+            serializers = ProductRecipeSerializer(product_recipe)
             return Response(serializers.data, status=status.HTTP_200_OK)
         except:
             data['err'] = "Some error occurred"
