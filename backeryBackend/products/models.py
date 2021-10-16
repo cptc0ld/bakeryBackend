@@ -5,12 +5,15 @@ class Ingredient(models.Model):
     id = models.SlugField(primary_key=True)
     name = models.CharField(max_length=30, unique=True)
     costPrice = models.IntegerField(default=0)
+    quantity = models.IntegerField(default=0)
     image = models.ImageField('Uploaded image', default='default.jpg')
 
 
 class Products(models.Model):
     name = models.CharField(max_length=30, unique=True)
     image = models.ImageField('Uploaded image', default='default.jpg')
+    sellPrice = models.IntegerField(default=0)
+    desc = models.CharField(max_length=2000, default='')
 
     def __str__(self):
         return self.name

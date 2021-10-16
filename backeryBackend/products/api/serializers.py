@@ -20,7 +20,8 @@ class IngredientSerializer(serializers.ModelSerializer):
             'id': slugify(name),
             'name': name,
             'costPrice': validated_data.pop('costPrice'),
-            'image': validated_data.pop('image')
+            'image': validated_data.pop('image'),
+            'quantity': validated_data.pop('quantity')
         }
         ingredient_model = Ingredient.objects.create(**ingredient)
         return ingredient_model
