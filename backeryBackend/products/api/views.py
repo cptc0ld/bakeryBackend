@@ -102,3 +102,19 @@ def update_product(request):
             return Response(content, status=status.HTTP_200_OK)
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE', ])
+@permission_classes([IsAdminUser, ])
+@renderer_classes([JsonRenderer])
+def delete_product(request, id):
+    if request.method == 'DELETE':
+        try:
+            product = Products.objects.get(pk=id)
+            name = product.name
+            product.delete()
+            content = {'message': name + " Deleted"}
+            return Response(content, status=status.HTTP_200_OK)
+        except:
+            content = {'error_message': "some error"}
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
