@@ -18,7 +18,7 @@ def list_all_products(request):
     if request.method == 'GET':
         data = {}
         try:
-            product = Products.objects.all()
+            product = Products.objects.all().order_by('name')
             serializers = ProductSerializer(product, many=True)
             return Response(serializers.data, status=status.HTTP_200_OK)
         except:
@@ -49,7 +49,7 @@ def list_all_ingredients(request):
     if request.method == 'GET':
         data = {}
         try:
-            ingredients = Ingredient.objects.all()
+            ingredients = Ingredient.objects.all().order_by('name')
             serializers = IngredientSerializer(ingredients, many=True)
             content = {'ingredients': serializers.data}
             return Response(content, status=status.HTTP_200_OK)
