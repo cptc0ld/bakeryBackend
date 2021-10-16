@@ -81,8 +81,7 @@ def add_products(request):
         serializers = ProductRecipeSerializer(data=request.data)
         if serializers.is_valid():
             serializers.save()
-            content = {'message': request.data.get('product')['name'] + "Added"}
-            return Response(content, status=status.HTTP_200_OK)
+            return Response(serializers.data, status=status.HTTP_200_OK)
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
 
