@@ -30,7 +30,7 @@ def create_order(request):
 
 @api_view(['GET', ])
 @permission_classes([IsAuthenticated, ])
-@renderer_classes([JsonRenderer])
+# @renderer_classes([JsonRenderer])
 def retrieve_order(request):
     if request.method == 'GET':
         data = {}
@@ -40,7 +40,8 @@ def retrieve_order(request):
             order = Order.objects.filter(user=token.user)
             serializers = OrderSerializer(order, many=True)
             data['order'] = serializers.data
+            print(serializers.data)
             return Response(data, status=status.HTTP_200_OK)
         except:
-            data['err'] = "Some error occurred"
+            data['error_message'] = "Some error occurred"
             return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)

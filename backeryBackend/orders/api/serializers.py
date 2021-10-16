@@ -1,12 +1,15 @@
 from rest_framework import serializers
 
 from orders.models import Order
+from products.api.serializers import ProductSerializer
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
+
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ['id', 'product', 'user']
 
     def create(self, validated_data, **kwargs):
         product = kwargs.get('product')
