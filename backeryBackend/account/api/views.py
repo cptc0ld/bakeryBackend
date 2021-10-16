@@ -110,6 +110,7 @@ class ObtainAuthTokenView(APIView):
             context['email'] = email.lower()
             context['token'] = token.key
             context['is_admin'] = account.is_admin
+            context['username'] = account.username
             return Response(context, status=status.HTTP_200_OK)
         else:
             context['response'] = 'Error'
