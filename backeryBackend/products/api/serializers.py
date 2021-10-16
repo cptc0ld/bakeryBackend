@@ -1,3 +1,4 @@
+from django.utils.text import slugify
 from rest_framework import serializers
 from ..models import Products, Ingredient, ProductsRecipe, IngredientsPresent
 
@@ -6,11 +7,23 @@ class IngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
         fields = '__all__'
+        read_only_fields = ['id']
 
     def to_representation(self, instance):
         data = super(IngredientSerializer, self).to_representation(instance)
         data['image'] = " http://127.0.0.1:8000" + data['image']
         return data
+
+    def create(self, validated_data):
+        name = validated_data.pop('name')
+        ingredient = {
+            'id': slugify(name),
+            'name': name,
+            'costPrice': validated_data.pop('costPrice'),
+            'image': validated_data.pop('image')
+        }
+        ingredient_model = Ingredient.objects.create(**ingredient)
+        return ingredient_model
 
 
 class ProductSerializer(serializers.ModelSerializer):

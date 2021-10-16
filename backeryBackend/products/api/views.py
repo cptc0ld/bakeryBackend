@@ -67,7 +67,7 @@ def add_ingredients(request):
         serializers = IngredientSerializer(data=request.data)
         if serializers.is_valid():
             serializers.save()
-            content = {'added': serializers.data}
+            content = {'ingredient': serializers.data}
             return Response(content, status=status.HTTP_200_OK)
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -118,3 +118,19 @@ def delete_product(request, id):
         except:
             content = {'error_message': "some error"}
             return Response(content, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET', ])
+@permission_classes([IsAuthenticated, ])
+@renderer_classes([JsonRenderer])
+def list_ingredient(request, id):
+    if request.method == 'GET':
+        data = {}
+        try:
+            ingredient = Ingredient.objects.get(pk=id)
+            serializers = IngredientSerializer(ingredient)
+            content = {'ingredient': serializers.data}
+            return Response(content, status=status.HTTP_200_OK)
+        except:
+            data['err'] = "Some error occurred"
+            return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
