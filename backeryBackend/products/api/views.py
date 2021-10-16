@@ -134,3 +134,37 @@ def list_ingredient(request, id):
         except:
             data['err'] = "Some error occurred"
             return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+@api_view(['PUT', ])
+@permission_classes([IsAdminUser, ])
+@renderer_classes([JsonRenderer])
+@parser_classes([MultiPartParser, FormParser, JSONParser])
+def update_ingredient(request):
+    if request.method == 'PUT':
+        ingredient_id = request.POST.get('id')
+        ingredient = Ingredient.objects.get(pk=ingredient_id)
+        serializers = IngredientSerializer(ingredient, data=request.data)
+        print(request.data)
+        if serializers.is_valid():
+            serializers.save()
+            content = {'message': ingredient.name + "Added"}
+            return Response(content, status=status.HTTP_200_OK)
+        else:
+            return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['DELETE', ])
+@permission_classes([IsAdminUser, ])
+@renderer_classes([JsonRenderer])
+def delete_ingredient(request, id):
+    if request.method == 'DELETE':
+        try:
+            ingredient = Ingredient.objects.get(pk=id)
+            name = ingredient.name
+            ingredient.delete()
+            content = {'message': name + " Deleted"}
+            return Response(content, status=status.HTTP_200_OK)
+        except:
+            content = {'error_message': "some error"}
+            return Response(content, status=status.HTTP_400_BAD_REQUEST)
