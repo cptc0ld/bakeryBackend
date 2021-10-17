@@ -9,7 +9,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ['id', 'product', 'user']
+        fields = ['id', 'orderDate', 'product', 'user']
 
     def create(self, validated_data, **kwargs):
         product = kwargs.get('product')

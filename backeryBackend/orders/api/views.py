@@ -30,15 +30,33 @@ def create_order(request):
 
 @api_view(['GET', ])
 @permission_classes([IsAuthenticated, ])
-# @renderer_classes([JsonRenderer])
+@renderer_classes([JsonRenderer])
 def retrieve_order(request):
     if request.method == 'GET':
         data = {}
         try:
             header_token = request.headers['Authorization']
             token = Token.objects.get(key=header_token.split()[1])
-            order = Order.objects.filter(user=token.user)
+            order = Order.objects.filter(user=token.user).order_by('orderDate')
             serializers = OrderSerializer(order, many=True)
+            data['order'] = serializers.data
+            print(serializers.data)
+            return Response(data, status=status.HTTP_200_OK)
+        except:
+            data['error_message'] = "Some error occurred"
+            return Response(data, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+@api_view(['GET', ])
+@permission_classes([IsAuthenticated, ])
+@renderer_classes([JsonRenderer])
+def retrieve_order_by_id(request, id):
+    if request.method == 'GET':
+        data = {}
+        try:
+            header_token = request.headers['Authorization']
+            token = Token.objects.get(key=header_token.split()[1])
+            order = Order.objects.filter(user=token.user, id=id)[0]
+            serializers = OrderSerializer(order)
             data['order'] = serializers.data
             print(serializers.data)
             return Response(data, status=status.HTTP_200_OK)
