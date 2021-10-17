@@ -98,7 +98,7 @@ def update_product(request):
         print(request.data)
         if serializers.is_valid():
             serializers.save()
-            content = {'message': product.name + "Added"}
+            content = {'message': product.name + " Updated"}
             return Response(content, status=status.HTTP_200_OK)
         else:
             return Response(serializers.errors, status=status.HTTP_400_BAD_REQUEST)
