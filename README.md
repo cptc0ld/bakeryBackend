@@ -32,3 +32,8 @@ Set your db credentials in settings.py
 Posted with postman collection  https://documenter.getpostman.com/view/8283532/UV5WDxyP
 
 
+# Errors encountered while running in docker
+
+- initdb: error: directory "/var/lib/postgresql/data" exists but is not empty
+
+        delete the `postgres-data` folder from your project dir
