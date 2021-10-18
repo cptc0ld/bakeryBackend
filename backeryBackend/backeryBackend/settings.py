@@ -74,7 +74,7 @@ DATABASES = {
         'NAME': 'Backery2',
         'USER': 'django',
         'PASSWORD': 'password',
-        'HOST': 'db',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
