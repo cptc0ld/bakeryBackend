@@ -31,6 +31,11 @@ Set your db credentials in settings.py
 
 Posted with postman collection  https://documenter.getpostman.com/view/8283532/UV5WDxyP
 
+# ERD
+
+![ERD](ERD.png)
+
+
 
 # Errors encountered while running in docker
 
