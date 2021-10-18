@@ -16,4 +16,4 @@ COPY . /code/
 # Install dependencies
 RUN pip install -r requirements.txt
 
-RUN python manage.py makemigrations
+RUN python ./backeryBackend/manage.py makemigrations

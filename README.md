@@ -12,6 +12,11 @@ Frontend for this project is published on https://github.com/cptc0ld/BackeryAppF
     - Install all packages in Virtual environment
         pip install -r requirements.txt
 
+## Install by Docker
+
+    - docker-compose build   
+    - docker-compose up
+
 ## Run the app
     python manage.py makemigrations
     python manage.py migrate
